@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:meta/meta.dart';
 
-/// ESPTouch packet type, either broadcast or multicast.
 enum ESPTouchPacket { broadcast, multicast }
 
 /// Contain the configured device's IP and MAC addresses.
@@ -93,11 +91,11 @@ class ESPTouchTask {
   ESPTouchTaskParameter taskParameter;
 
   ESPTouchTask({
-    @required this.ssid,
-    @required this.bssid,
+    required this.ssid,
+    required this.bssid,
     this.password = '',
     this.packet = ESPTouchPacket.broadcast,
-    this.taskParameter,
+    required this.taskParameter,
   });
 
   /// Launch ESPTouch task and listen for events.
@@ -112,7 +110,7 @@ class ESPTouchTask {
       'bssid': bssid,
       'password': password,
       'packet': packet == ESPTouchPacket.broadcast ? '1' : '0',
-      'taskParameter': (taskParameter ?? ESPTouchTaskParameter()).toMap(),
+      'taskParameter': (taskParameter).toMap(),
     }).map((event) => ESPTouchResult.fromMap(event));
   }
 }

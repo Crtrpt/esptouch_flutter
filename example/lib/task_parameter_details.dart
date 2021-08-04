@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 class TaskParameterDetails extends StatelessWidget {
   const TaskParameterDetails({
-    Key key,
-    @required this.color,
-    @required TextEditingController expectedTaskResults,
-    @required TextEditingController intervalGuideCode,
-    @required TextEditingController intervalDataCode,
-    @required TextEditingController timeoutGuideCode,
-    @required TextEditingController timeoutDataCode,
-    @required TextEditingController repeat,
-    @required TextEditingController portListening,
-    @required TextEditingController portTarget,
-    @required TextEditingController waitUdpReceiving,
-    @required TextEditingController waitUdpSending,
-    @required TextEditingController thresholdSucBroadcastCount,
-  })  : _expectedTaskResults = expectedTaskResults,
+    Key? key,
+    required this.color,
+    required TextEditingController expectedTaskResults,
+    required TextEditingController intervalGuideCode,
+    required TextEditingController intervalDataCode,
+    required TextEditingController timeoutGuideCode,
+    required TextEditingController timeoutDataCode,
+    required TextEditingController repeat,
+    required TextEditingController portListening,
+    required TextEditingController portTarget,
+    required TextEditingController waitUdpReceiving,
+    required TextEditingController waitUdpSending,
+    required TextEditingController thresholdSucBroadcastCount,
+  })   : _expectedTaskResults = expectedTaskResults,
         _intervalGuideCode = intervalGuideCode,
         _intervalDataCode = intervalDataCode,
         _timeoutGuideCode = timeoutGuideCode,
@@ -64,52 +64,62 @@ class TaskParameterDetails extends StatelessWidget {
           controller: _intervalGuideCode,
           labelText: 'Interval guide code (ms)',
           hintText: 8,
+          helperText: '',
         ),
         _OptionalIntegerField(
           controller: _intervalDataCode,
           labelText: 'Interval data code (ms)',
           hintText: 8,
+          helperText: '',
         ),
         _OptionalIntegerField(
           controller: _timeoutGuideCode,
           labelText: 'Timeout guide code (ms)',
           hintText: 2000,
+          helperText: '',
         ),
         _OptionalIntegerField(
           controller: _timeoutDataCode,
           labelText: 'Timeout data code (ms)',
           hintText: 4000,
+          helperText: '',
         ),
         _OptionalIntegerField(
           controller: _repeat,
           labelText: 'Repeat',
           hintText: 1,
+          helperText: '',
         ),
         // TODO: mac and ip length are skipped for now.
         _OptionalIntegerField(
           controller: _portListening,
           labelText: 'Listen on port',
           hintText: 18266,
+          helperText: '',
         ),
         _OptionalIntegerField(
           controller: _portTarget,
           labelText: 'Target port',
           hintText: 7001,
+          helperText: '',
         ),
         _OptionalIntegerField(
           controller: _waitUdpReceiving,
           labelText: 'Wait UDP receiving (ms)',
           hintText: 15000,
+          helperText: '',
         ),
         _OptionalIntegerField(
           controller: _waitUdpSending,
           labelText: 'Wait UDP sending (ms)',
           hintText: 45000,
+          helperText: '',
         ),
         _OptionalIntegerField(
           controller: _thresholdSucBroadcastCount,
           labelText: 'Broadcast count success threshold',
           hintText: 1,
+          helperText: '',
         ),
       ],
     );
@@ -118,11 +128,11 @@ class TaskParameterDetails extends StatelessWidget {
 
 class _OptionalIntegerField extends StatelessWidget {
   const _OptionalIntegerField({
-    Key key,
-    @required this.controller,
-    @required this.labelText,
-    @required this.hintText,
-    this.helperText,
+    Key? key,
+    required this.controller,
+    required this.labelText,
+    required this.hintText,
+    required this.helperText,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -135,12 +145,12 @@ class _OptionalIntegerField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.number,
-      validator: (String value) {
-        value = value.trim();
+      validator: (String? value) {
+        value = value!.trim();
         if (value == '') {
           return null;
         }
-        int v = int.tryParse(value, radix: 10);
+        int v = int.tryParse(value, radix: 10)!;
         if (v == null) {
           return 'Please enter an integer number';
         }

@@ -13,10 +13,8 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-const helperSSID =
-    "SSID is the technical term for a network name. When you set up a wireless home network, you give it a name to distinguish it from other networks in your neighbourhood.";
-const helperBSSID =
-    "BSSID is the MAC address of the wireless access point (router).";
+const helperSSID = "SSID is the technical term for a network name. When you set up a wireless home network, you give it a name to distinguish it from other networks in your neighbourhood.";
+const helperBSSID = "BSSID is the MAC address of the wireless access point (router).";
 const helperPassword = "The password of the Wi-Fi network";
 
 class _MyAppState extends State<MyApp> {
@@ -24,8 +22,7 @@ class _MyAppState extends State<MyApp> {
   final TextEditingController _ssid = TextEditingController();
   final TextEditingController _bssid = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  final TextEditingController _expectedTaskResults =
-      TextEditingController(); // TODO; is it the same as threshold?
+  final TextEditingController _expectedTaskResults = TextEditingController(); // TODO; is it the same as threshold?
   final TextEditingController _intervalGuideCode = TextEditingController();
   final TextEditingController _intervalDataCode = TextEditingController();
   final TextEditingController _timeoutGuideCode = TextEditingController();
@@ -39,8 +36,7 @@ class _MyAppState extends State<MyApp> {
   final TextEditingController _portTarget = TextEditingController();
   final TextEditingController _waitUdpReceiving = TextEditingController();
   final TextEditingController _waitUdpSending = TextEditingController();
-  final TextEditingController _thresholdSucBroadcastCount =
-      TextEditingController();
+  final TextEditingController _thresholdSucBroadcastCount = TextEditingController();
   ESPTouchPacket _packet = ESPTouchPacket.broadcast;
 
   @override
@@ -113,20 +109,16 @@ class _MyAppState extends State<MyApp> {
   createTask() {
     final taskParameter = ESPTouchTaskParameter();
     if (_intervalGuideCode.text.isNotEmpty) {
-      taskParameter.intervalGuideCode =
-          Duration(milliseconds: int.parse(_intervalGuideCode.text));
+      taskParameter.intervalGuideCode = Duration(milliseconds: int.parse(_intervalGuideCode.text));
     }
     if (_intervalDataCode.text.isNotEmpty) {
-      taskParameter.intervalDataCode =
-          Duration(milliseconds: int.parse(_intervalDataCode.text));
+      taskParameter.intervalDataCode = Duration(milliseconds: int.parse(_intervalDataCode.text));
     }
     if (_timeoutGuideCode.text.isNotEmpty) {
-      taskParameter.timeoutGuideCode =
-          Duration(milliseconds: int.parse(_timeoutGuideCode.text));
+      taskParameter.timeoutGuideCode = Duration(milliseconds: int.parse(_timeoutGuideCode.text));
     }
     if (_timeoutDataCode.text.isNotEmpty) {
-      taskParameter.timeoutDataCode =
-          Duration(milliseconds: int.parse(_timeoutDataCode.text));
+      taskParameter.timeoutDataCode = Duration(milliseconds: int.parse(_timeoutDataCode.text));
     }
     if (_repeat.text.isNotEmpty) {
       taskParameter.repeat = int.parse(_repeat.text);
@@ -138,16 +130,13 @@ class _MyAppState extends State<MyApp> {
       taskParameter.portTarget = int.parse(_portTarget.text);
     }
     if (_waitUdpSending.text.isNotEmpty) {
-      taskParameter.waitUdpSending =
-          Duration(milliseconds: int.parse(_waitUdpSending.text));
+      taskParameter.waitUdpSending = Duration(milliseconds: int.parse(_waitUdpSending.text));
     }
     if (_waitUdpReceiving.text.isNotEmpty) {
-      taskParameter.waitUdpReceiving =
-          Duration(milliseconds: int.parse(_waitUdpReceiving.text));
+      taskParameter.waitUdpReceiving = Duration(milliseconds: int.parse(_waitUdpReceiving.text));
     }
     if (_thresholdSucBroadcastCount.text.isNotEmpty) {
-      taskParameter.thresholdSucBroadcastCount =
-          int.parse(_thresholdSucBroadcastCount.text);
+      taskParameter.thresholdSucBroadcastCount = int.parse(_thresholdSucBroadcastCount.text);
     }
     if (_expectedTaskResults.text.isNotEmpty) {
       taskParameter.expectedTaskResults = int.parse(_expectedTaskResults.text);
@@ -255,9 +244,9 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void setPacket(ESPTouchPacket packet) {
+  void setPacket(ESPTouchPacket? packet) {
     setState(() {
-      _packet = packet;
+      _packet = packet!;
     });
   }
 }
@@ -265,7 +254,7 @@ class _MyAppState extends State<MyApp> {
 class TaskRoute extends StatefulWidget {
   final ESPTouchTask task;
 
-  TaskRoute({this.task});
+  TaskRoute({required this.task});
 
   @override
   State<StatefulWidget> createState() {
@@ -274,9 +263,9 @@ class TaskRoute extends StatefulWidget {
 }
 
 class TaskRouteState extends State<TaskRoute> {
-  Stream<ESPTouchResult> _stream;
-  StreamSubscription<ESPTouchResult> _streamSubscription;
-  Timer _timer;
+  late Stream<ESPTouchResult> _stream;
+  late StreamSubscription<ESPTouchResult> _streamSubscription;
+  late Timer _timer;
 
   final List<ESPTouchResult> _results = [];
 
@@ -288,7 +277,7 @@ class TaskRouteState extends State<TaskRoute> {
     final sending = widget.task.taskParameter.waitUdpSending;
     final cancelLatestAfter = receiving + sending;
     _timer = Timer(cancelLatestAfter, () {
-      _streamSubscription?.cancel();
+      _streamSubscription.cancel();
       if (_results.isEmpty && mounted) {
         showDialog(
             context: context,
@@ -313,7 +302,7 @@ class TaskRouteState extends State<TaskRoute> {
   @override
   dispose() {
     _timer.cancel();
-    _streamSubscription?.cancel();
+    _streamSubscription.cancel();
     super.dispose();
   }
 
@@ -340,8 +329,7 @@ class TaskRouteState extends State<TaskRoute> {
   copyValue(BuildContext context, String label, String v) {
     return () {
       Clipboard.setData(ClipboardData(text: v));
-      Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text('Copied $label to clipboard: $v')));
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Copied $label to clipboard: $v')));
     };
   }
 
@@ -364,8 +352,7 @@ class TaskRouteState extends State<TaskRoute> {
                 child: Row(
                   children: <Widget>[
                     Text('BSSID: ', style: Theme.of(context).textTheme.body2),
-                    Text(result.bssid,
-                        style: TextStyle(fontFamily: 'monospace')),
+                    Text(result.bssid, style: TextStyle(fontFamily: 'monospace')),
                   ],
                 ),
               ),
@@ -400,8 +387,7 @@ class TaskRouteState extends State<TaskRoute> {
             if (!snapshot.hasData) {
               return Center(
                 child: CircularProgressIndicator(
-                  valueColor:
-                      AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                  valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
                 ),
               );
             }
